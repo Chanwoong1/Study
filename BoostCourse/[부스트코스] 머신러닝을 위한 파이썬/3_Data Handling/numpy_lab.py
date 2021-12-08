@@ -17,28 +17,44 @@ def zero_or_one_or_empty_ndarray(shape, type=0, dtype=np.int):
 
 
 def change_shape_of_ndarray(X, n_row):
-    pass
+    if n_row == 1 :
+        return X.flatten()
+    return X.reshape(n_row, -1)
 
 
 def concat_ndarray(X_1, X_2, axis):
-    pass
+    try :
+        if X_1.ndim == 1:
+            X_1 = X_1.reshape(1, -1)
+        if X_2.ndim == 1 :
+            X_2 = X_2.reshape(1, -1)
+        return np.concatenate((X_1, X_2), axis = axis)
+    except ValueError:
+        return False
 
 
 def normalize_ndarray(X, axis=99, dtype=np.float32):
-    pass
+    if axis == 99 :
+        return np.array((X - np.mean(X)) / X.std(), dtype = dtype)
+    elif axis == 0 :
+        return np.array([(X[i] - np.mean(X[i])) / X[i].std() for i in range(len(X))], dtype = dtype)
+    else :
+        return np.array([(i - np.mean(i)) / np.array(i).std() for i in zip(*X)], dtype = dtype).T
 
 
 def save_ndarray(X, filename="test.npy"):
-    pass
+    file_test = open(filename, 'wb')
+    return np.save(file_test, X)
 
 
 def boolean_index(X, condition):
-    pass
+    condition = eval(str('X') + condition)
+    return np.where(condition)
 
 
 def find_nearest_value(X, target_value):
-    pass
+    return target_value - min(abs(X - target_value))
 
 
 def get_n_largest_values(X, n):
-    pass
+    return np.sort(X)[::-1][ : n]
